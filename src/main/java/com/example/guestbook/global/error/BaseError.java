@@ -1,6 +1,5 @@
-package com.example.guestbook.global.error.exception;
+package com.example.guestbook.global.error;
 
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 public interface BaseError {

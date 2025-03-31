@@ -1,11 +1,8 @@
 
 package com.example.guestbook.global.error;
 
-import com.example.guestbook.global.error.exception.GlobalErrorCode;
+import com.example.guestbook.global.dto.ApiResponse;
 import com.example.guestbook.global.error.exception.GuestBookException;
-import com.example.guestbook.global.error.exception.BaseError;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,20 +23,21 @@ public class GlobalExceptionHandler {
         log.info(e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ErrorResponse.create(GlobalErrorCode.NOT_FOUND));
+                .body(ApiResponse.fail(GlobalErrorCode.NOT_FOUND));
     }
 
     @ExceptionHandler(GuestBookException.class)
-    public ResponseEntity<ErrorResponse> handleBusinessException(GuestBookException e) {
+
+    public ResponseEntity<ApiResponse> handleBusinessException(GuestBookException e) {
         log.info("GuestBookException Exception: {}", e.getMessage());
 
         return ResponseEntity
                 .status(e.getHttpStatus())
-                .body(ErrorResponse.create(e.getError()));
+                .body(ApiResponse.fail(e.getError()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException e) {
+    public ResponseEntity<ApiResponse> handleValidationExceptions(MethodArgumentNotValidException e) {
         log.info("Validation Exception: {}", e.getMessage());
 
         String errorMessage = e.getBindingResult().getAllErrors().stream()
@@ -53,39 +51,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.create(GlobalErrorCode.BAD_REQUEST, errorMessage));
+                .body(ApiResponse.fail(GlobalErrorCode.BAD_REQUEST, errorMessage));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception e) {
+    public ResponseEntity<ApiResponse> handleAllExceptions(Exception e) {
         log.error("Unhandled Exception: ", e);
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ErrorResponse.create(GlobalErrorCode.INTERNAL_SERVER_ERROR));
+                .body(ApiResponse.fail(GlobalErrorCode.INTERNAL_SERVER_ERROR));
     }
 
-    @Getter
-    @NoArgsConstructor
-    static class ErrorResponse {
-        String code;
-        int statusCode;
-        String message;
-
-        public static ErrorResponse create(BaseError baseError) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.code = baseError.getCode();
-            errorResponse.statusCode = baseError.getHttpStatus().value();
-            errorResponse.message = baseError.getMessage();
-            return errorResponse;
-        }
-
-        public static ErrorResponse create(BaseError baseError, String message) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.code = baseError.getCode();
-            errorResponse.statusCode = baseError.getHttpStatus().value();
-            errorResponse.message = message;
-            return errorResponse;
-        }
-    }
 }

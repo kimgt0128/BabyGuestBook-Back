@@ -1,5 +1,6 @@
 package com.example.guestbook.global.error.exception;
 
+import com.example.guestbook.global.error.BaseError;
 import org.springframework.http.HttpStatus;
 
 public class ExistingResourceException extends GuestBookException {

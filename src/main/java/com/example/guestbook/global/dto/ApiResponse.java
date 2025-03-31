@@ -1,5 +1,6 @@
 package com.example.guestbook.global.dto;
 
+import com.example.guestbook.global.error.BaseError;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,13 +10,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
-    private String statusCode;
+    private int statusCode;
     private String message;
     private T data;
-    private HttpStatus httpStatus;
     private String code;
 
-    private final static String SUCCESS_CODE = "200";
+    private final static int SUCCESS_CODE = 200;
 
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
@@ -37,10 +37,25 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> success(T data, String message, HttpStatus httpStatus) {
         return ApiResponse.<T>builder()
                 .code("SUCCESS")
-                .statusCode(SUCCESS_CODE)
+                .statusCode(httpStatus.value())
                 .message(message)
                 .data(data)
                 .build();
     }
 
+    public static <T> ApiResponse<T> fail(BaseError error) {
+        return ApiResponse.<T>builder()
+                .code(error.getCode())
+                .statusCode(error.getHttpStatus().value())
+                .message(error.getMessage())
+                .build();
+    }
+
+    public static <T> ApiResponse<T> fail(BaseError error, String message) {
+        return ApiResponse.<T>builder()
+                .code(error.getCode())
+                .statusCode(error.getHttpStatus().value())
+                .message(message)
+                .build();
+    }
 }
