@@ -27,11 +27,12 @@ public class CommentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(
+    public ApiResponse<Object> create(
             @PathVariable("postId") Long postId,
             @RequestBody @Valid CreateCommentRequest req
     ) {
         commentService.create(postId, req);
+        return ApiResponse.success("댓글 작성 성공");
     }
 
     @PatchMapping("/{commentId}")
