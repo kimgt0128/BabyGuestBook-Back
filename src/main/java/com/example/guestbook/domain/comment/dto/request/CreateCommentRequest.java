@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,11 +21,11 @@ public class CreateCommentRequest {
         this.password = password;
     }
 
-    public Comment toEntity(Long postId) {
+    public Comment toEntity(Long postId, PasswordEncoder passwordEncoder) {
         return Comment.builder()
                 .content(content)
                 .username(username)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .postId(postId)
                 .build();
     }
