@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
 public class CreatePostRequest {
     private String content;
     private String username;
@@ -24,7 +23,7 @@ public class CreatePostRequest {
     public Post toEntity() {
         return Post.builder()
                 .content(content)
-                //.username(username)
+                .username(username)
                 .password(password)
                 .build();
     }

@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-
 @Entity
 public class Post {
     @Id
@@ -22,7 +21,7 @@ public class Post {
 
     private String content;
     private String emotion;
-    //private String username;
+    private String username;
     private String password;
 
     @CreatedDate
@@ -31,10 +30,10 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(String content, String emotion, String password) {
+    public Post(String content, String emotion, String username, String password) {
         this.content = content;
         this.emotion = emotion;
-        //this.username = username;
+        this.username = username;
         this.password = password;
     }
 

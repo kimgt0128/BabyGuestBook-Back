@@ -8,17 +8,13 @@ import com.example.guestbook.domain.post.dto.response.PostResponse;
 import com.example.guestbook.domain.post.entity.Post;
 import com.example.guestbook.domain.post.exception.PostErrorCode;
 import com.example.guestbook.domain.post.repository.PostRepository;
-import com.example.guestbook.global.error.GlobalExceptionHandler;
 import com.example.guestbook.global.error.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.io.InvalidObjectException;
 import java.util.List;
 
 @RequiredArgsConstructor
-
 @Service
 public class PostService {
     private final PostRepository postRepository;
@@ -34,7 +30,6 @@ public class PostService {
 
     @Transactional
     public void create(CreatePostRequest req) {
-        // 엔티티 변환
         Post entity = req.toEntity();
         postRepository.save(entity);
     }
@@ -45,11 +40,9 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(PostErrorCode.NOT_FOUND));
 
-        // 비밀번호 일치 확인
         this.checkPassword(req.getPassword(), post.getPassword());
 
         post.update(req.getContent());
-        postRepository.save(post);
     }
 
     @Transactional
@@ -57,7 +50,6 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(PostErrorCode.NOT_FOUND));
 
-        //비밀번호 일치 확인
         this.checkPassword(req.getPassword(), post.getPassword());
     }
 

@@ -8,13 +8,13 @@ import com.example.guestbook.domain.post.service.PostService;
 import com.example.guestbook.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-
 @RequestMapping("/api/v1/posts")
 public class PostController {
 
@@ -25,15 +25,14 @@ public class PostController {
         return ApiResponse.success(postService.readAll(), "게시글이 정상적으로 조회되었습니다.");
     }
 
-    //Create
     @PostMapping("/post")
     public ApiResponse create(@RequestBody CreatePostRequest req) {
         postService.create(req);
         return ApiResponse.success("게시글이 정상적으로 생성되었습니다.");
     }
 
-    //Update
     @PatchMapping("/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ApiResponse updatePost(
             @PathVariable Long postId,
             @RequestBody @Valid UpdatePostRequest req
@@ -42,8 +41,8 @@ public class PostController {
         return ApiResponse.success(postId + "번 게시글이 정상적으로 수정되었습니다.");
     }
 
-    //Delete
     @DeleteMapping("/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ApiResponse delete(
             @PathVariable Long postId,
             @RequestBody @Valid DeletePostRequest req

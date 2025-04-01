@@ -10,18 +10,20 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
 public class PostResponse {
 
     private Long postId;
     private String content;
-    //User 추가
+    private String username;
+    private String emotion;
     private LocalDateTime updatedAt;
 
     @Builder
-    public PostResponse(Long postId, String content, LocalDateTime updatedAt) {
+    public PostResponse(Long postId, String content, String emotion, String username, LocalDateTime updatedAt) {
         this.postId = postId;
         this.content = content;
+        this.emotion = emotion;
+        this.username = username;
         this.updatedAt = updatedAt;
 
     }
@@ -31,8 +33,9 @@ public class PostResponse {
         return PostResponse.builder()
                 .postId(post.getId())
                 .content(post.getContent())
+                .emotion(post.getEmotion())
+                .username(post.getUsername())
                 .updatedAt(post.getUpdatedAt())
-                //.user(new User(post.getUsername())
                 .build();
     }
 }
