@@ -49,4 +49,8 @@ public class OauthAttributes {
                 .socialId(Long.valueOf(attributes.get("id").toString())) //tostring으로 변환하고 넣어주는 이유는 널 예외를 방지하고, integer 값일때도 안전하게 long으로 변환가능해서
                 .build();
     }
+
+    public OauthAttributes toEntity() {
+
+    }
 }
