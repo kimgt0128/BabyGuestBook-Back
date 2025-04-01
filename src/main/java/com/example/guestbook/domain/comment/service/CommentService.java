@@ -10,6 +10,7 @@ import com.example.guestbook.domain.comment.repository.CommentRepository;
 import com.example.guestbook.global.error.exception.BadRequestException;
 import com.example.guestbook.global.error.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
 
+    private final PasswordEncoder passwordEncoder;
     private final CommentRepository commentRepository;
 
     public List<CommentResponse> readAll(Long postId) {
@@ -29,7 +31,7 @@ public class CommentService {
 
     @Transactional
     public void create(Long postId, CreateCommentRequest req) {
-        Comment comment = req.toEntity(postId);
+        Comment comment = req.toEntity(postId, passwordEncoder);
         commentRepository.save(comment);
     }
 
@@ -44,12 +46,6 @@ public class CommentService {
         comment.update(req.getContent());
     }
 
-    private void checkPassword(String password, String expectedPassword) {
-        if (!password.equals(expectedPassword)) {
-            throw new BadRequestException(CommentErrorCode.INVALID_PASSWORD);
-        }
-    }
-
     @Transactional
     public void delete(Long postId, Long commentId, DeleteCommentRequest req) {
         Comment comment = commentRepository.findById(commentId)
@@ -59,5 +55,11 @@ public class CommentService {
         this.checkPassword(req.getPassword(), comment.getPassword());
 
         commentRepository.delete(comment);
+    }
+
+    private void checkPassword(String password, String expectedPassword) {
+        if (!passwordEncoder.matches(password, expectedPassword)) {
+            throw new BadRequestException(CommentErrorCode.INVALID_PASSWORD);
+        }
     }
 }
