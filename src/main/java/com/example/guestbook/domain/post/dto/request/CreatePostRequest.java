@@ -24,7 +24,7 @@ public class CreatePostRequest {
     public Post toEntity() {
         return Post.builder()
                 .content(content)
-                .username(username)
+                //.username(username)
                 .password(password)
                 .build();
     }
