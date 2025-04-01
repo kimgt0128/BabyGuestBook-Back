@@ -10,25 +10,33 @@ import org.springframework.http.HttpStatus;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
+    private String code;
     private int statusCode;
     private String message;
     private T data;
-    private String code;
 
-    private final static int SUCCESS_CODE = 200;
+    private final static String SUCCESS_CODE = "SUCCESS";
+
+    public static ApiResponse<Object> success(String message) {
+        return ApiResponse.builder()
+                .code(SUCCESS_CODE)
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .build();
+    }
 
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
-                .code("SUCCESS")
-                .statusCode(SUCCESS_CODE)
+                .code(SUCCESS_CODE)
+                .statusCode(HttpStatus.OK.value())
                 .data(data)
                 .build();
     }
 
     public static <T> ApiResponse<T> success(T data, String message) {
         return ApiResponse.<T>builder()
-                .code("SUCCESS")
-                .statusCode(SUCCESS_CODE)
+                .code(SUCCESS_CODE)
+                .statusCode(HttpStatus.OK.value())
                 .message(message)
                 .data(data)
                 .build();
@@ -36,7 +44,7 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> success(T data, String message, HttpStatus httpStatus) {
         return ApiResponse.<T>builder()
-                .code("SUCCESS")
+                .code(SUCCESS_CODE)
                 .statusCode(httpStatus.value())
                 .message(message)
                 .data(data)
