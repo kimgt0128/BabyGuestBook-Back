@@ -1,5 +1,7 @@
 package com.example.guestbook.global.auth.dto;
 
+import com.example.guestbook.domain.member.entity.Member;
+import com.example.guestbook.domain.member.entity.Role;
 import com.example.guestbook.global.auth.exception.OauthErrorCode;
 import com.example.guestbook.global.error.exception.BadRequestException;
 import lombok.Builder;
@@ -10,18 +12,20 @@ import java.util.jar.Attributes;
 
 @Getter
 public class OauthAttributes {
-    private Map<String,Object> attributes;
-    private String email;
-    private String nickname;
-    private String registerType; // kakao,google
-    private Long socialId;
+    private final Map<String,Object> attributes;
+    private final String nameAttributeKey;
+    private final String email;
+    private final String nickname;
+    private final String registerType; // kakao,google
+    private final Long socialId;
 
     //여기서 엔티티로 변화시켜줌
     // 각각의 레지스터 타입에 따라 어트리뷰트 객체 넘겨주기
 
     @Builder
-    public OauthAttributes(Map<String,Object> attributes, String email, String nickname, String registerType, Long socialId) {
+    public OauthAttributes(Map<String,Object> attributes, String nameAttributeKey, String email, String nickname, String registerType, Long socialId) {
         this.attributes = attributes;
+        this.nameAttributeKey = nameAttributeKey;
         this.email = email;
         this.nickname = nickname;
         this.registerType = registerType;
@@ -49,8 +53,15 @@ public class OauthAttributes {
                 .socialId(Long.valueOf(attributes.get("id").toString())) //tostring으로 변환하고 넣어주는 이유는 널 예외를 방지하고, integer 값일때도 안전하게 long으로 변환가능해서
                 .build();
     }
-
-    public OauthAttributes toEntity() {
-
+    // 저장할때 쓰려고
+    public Member toEntity() {
+        return Member.builder()
+                .nickname(nickname)
+                .email(email)
+                .registerType("kakao")
+                .role(Role.USER)
+                .active(true)
+                .socialId(socialId)
+                .build();
     }
 }
