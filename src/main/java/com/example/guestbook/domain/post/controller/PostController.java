@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 
@@ -17,6 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+
+    @GetMapping
+    public ApiResponse<List<PostResponse>> readAll() {
+        return ApiResponse.success(postService.readAll(), "게시글이 정상적으로 조회되었습니다.");
+    }
 
     //Create
     @PostMapping("/post")
