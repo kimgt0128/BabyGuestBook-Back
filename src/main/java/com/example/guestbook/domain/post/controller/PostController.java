@@ -33,21 +33,19 @@ public class PostController {
 
     @PatchMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ApiResponse updatePost(
+    public void update(
             @PathVariable Long postId,
             @RequestBody @Valid UpdatePostRequest req
     ) {
         postService.update(postId, req);
-        return ApiResponse.success(postId + "번 게시글이 정상적으로 수정되었습니다.");
     }
 
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ApiResponse delete(
+    public void delete(
             @PathVariable Long postId,
             @RequestBody @Valid DeletePostRequest req
     ) {
         postService.delete(postId, req);
-        return ApiResponse.success(postId + "번 게시글이 정상적으로 삭제되었습니다.");
     }
 }
