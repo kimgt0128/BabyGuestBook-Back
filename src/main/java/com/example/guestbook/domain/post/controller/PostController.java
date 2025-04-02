@@ -26,7 +26,7 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public ApiResponse create(@RequestBody CreatePostRequest req) {
+    public ApiResponse create(@RequestBody @Valid CreatePostRequest req) {
         postService.create(req);
         return ApiResponse.success("게시글이 정상적으로 생성되었습니다.");
     }
@@ -34,7 +34,7 @@ public class PostController {
     @PatchMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(
-            @PathVariable Long postId,
+            @PathVariable("postId") Long postId,
             @RequestBody @Valid UpdatePostRequest req
     ) {
         postService.update(postId, req);
@@ -43,7 +43,7 @@ public class PostController {
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
-            @PathVariable Long postId,
+            @PathVariable("postId") Long postId,
             @RequestBody @Valid DeletePostRequest req
     ) {
         postService.delete(postId, req);
