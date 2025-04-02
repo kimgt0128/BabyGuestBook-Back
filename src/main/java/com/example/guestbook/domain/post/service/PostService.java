@@ -34,7 +34,7 @@ public class PostService {
 
     @Transactional
     public void create(CreatePostRequest req) {
-        Post entity = req.toEntity();
+        Post entity = req.toEntity(passwordEncoder);
         postRepository.save(entity);
     }
 
