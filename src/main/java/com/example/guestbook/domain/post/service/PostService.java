@@ -3,11 +3,14 @@ package com.example.guestbook.domain.post.service;
 
 import com.example.guestbook.domain.post.dto.request.CreatePostRequest;
 import com.example.guestbook.domain.post.dto.request.DeletePostRequest;
+import com.example.guestbook.domain.post.dto.request.ReadPostParameter;
 import com.example.guestbook.domain.post.dto.request.UpdatePostRequest;
 import com.example.guestbook.domain.post.dto.response.PostResponse;
 import com.example.guestbook.domain.post.entity.Post;
 import com.example.guestbook.domain.post.exception.PostErrorCode;
+import com.example.guestbook.domain.post.repository.PostQueryRepository;
 import com.example.guestbook.domain.post.repository.PostRepository;
+import com.example.guestbook.global.error.exception.BadRequestException;
 import com.example.guestbook.global.error.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +23,24 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostQueryRepository postQueryRepository;
 
-    public List<PostResponse> readAllInfiniteScroll(Long pageSize, Long lastPostId) {
-        List<Post> posts = lastPostId == null
-                ? postRepository.findAllInfiniteScroll(pageSize)
-                : postRepository.findAllInfiniteScroll(pageSize, lastPostId);
-
-        return posts.stream()
-                .map(PostResponse::from)
-                .toList();
+    public List<PostResponse> readAllInfiniteScroll(ReadPostParameter parameter) {
+        switch (parameter.getOrder()) {
+            case LATEST:
+                return postQueryRepository.findAllInfiniteScrollOrderById(
+                        parameter.getLastPostId(),
+                        parameter.getEmotion(),
+                        parameter.getPageSize()
+                );
+            case COMMENT:
+                return postQueryRepository.findAllInfiniteScrollOrderByCommentCnt(
+                        parameter.getEmotion(),
+                        parameter.getPageSize()
+                );
+            default:
+                throw new BadRequestException(PostErrorCode.INVALID_ORDER_PARAMS);
+        }
     }
 
     @Transactional

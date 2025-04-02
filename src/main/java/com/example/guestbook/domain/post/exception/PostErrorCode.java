@@ -11,7 +11,8 @@ public enum PostErrorCode implements BaseError {
 
 
     INVALID_PASSWORD("C_001", "비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
-    NOT_FOUND("C_002", "게시글 정보가 없습니다.", HttpStatus.NOT_FOUND);
+    NOT_FOUND("C_002", "게시글 정보가 없습니다.", HttpStatus.NOT_FOUND),
+    INVALID_ORDER_PARAMS("P_003", "정렬 기준이 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final String message;
