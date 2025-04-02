@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum OauthErrorCode implements BaseError {
-    INVALID_REGISTERID("O_001","옳바르지 않은 register_id 입니다",HttpStatus.BAD_REQUEST);
+    INVALID_REGISTERID("L_001","옳바르지 않은 register_id 입니다",HttpStatus.BAD_REQUEST);
     private final String code;
     private final String message;
     private final HttpStatus httpStatus;
