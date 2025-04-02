@@ -1,5 +1,6 @@
 package com.example.guestbook.domain.domain.post.data;
 
+import com.example.guestbook.domain.post.entity.Emotion;
 import com.example.guestbook.domain.post.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -48,7 +49,7 @@ public class DataInitializer {
                         .content("content" + i)
                         .username("user" + i)
                         .password("password")
-                        .emotion("HAPPY")
+                        .emotion(Emotion.values()[i % Emotion.values().length])
                         .build();
 
                 em.persist(post);
