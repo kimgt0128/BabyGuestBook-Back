@@ -8,7 +8,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Table(name = "comments")
+@Table(
+        name = "comments",
+        indexes = @Index(name = "idx_post_id", columnList = "postId")
+)
 @Entity
 @Getter
 @ToString
