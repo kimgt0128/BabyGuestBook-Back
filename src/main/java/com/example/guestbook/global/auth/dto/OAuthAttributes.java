@@ -44,7 +44,7 @@ public class OAuthAttributes {
         Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
 
-       return OAuthAttributes.builder()
+        return OAuthAttributes.builder()
                 .attributes(attributes)
                 .email(profile.get("email").toString())
                 .nickname(profile.get("nickname").toString())

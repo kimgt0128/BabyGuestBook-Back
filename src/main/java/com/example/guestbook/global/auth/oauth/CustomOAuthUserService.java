@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,15 +24,18 @@ public class CustomOAuthUserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-
+        Map<String, Object> attributes = oAuth2User.getAttributes();
         // 중복 코드 제거를 위한 변수 추출
         ClientRegistration clientRegistration = userRequest.getClientRegistration();
 
         String registrationId = clientRegistration.getRegistrationId(); //kakao
+
         String userNameAttributeName = clientRegistration.getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
 
-        OAuthAttributes oAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+
+
+        OAuthAttributes oAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, attributes);
         Member member = getOrSave(oAuthAttributes);
 
         // 팩토리 메서드를 사용하여 객체 생성
