@@ -2,8 +2,10 @@ package com.example.guestbook.domain.post.controller;
 
 import com.example.guestbook.domain.post.dto.request.CreatePostRequest;
 import com.example.guestbook.domain.post.dto.request.DeletePostRequest;
-import com.example.guestbook.domain.post.dto.response.PostResponse;
+import com.example.guestbook.domain.post.dto.request.ReadPostParameter;
 import com.example.guestbook.domain.post.dto.request.UpdatePostRequest;
+import com.example.guestbook.domain.post.dto.response.PostResponse;
+import com.example.guestbook.domain.post.entity.Emotion;
 import com.example.guestbook.domain.post.service.PostService;
 import com.example.guestbook.global.dto.ApiResponse;
 import jakarta.validation.Valid;
@@ -21,8 +23,16 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ApiResponse<List<PostResponse>> readAll() {
-        return ApiResponse.success(postService.readAll(), "게시글이 정상적으로 조회되었습니다.");
+    public ApiResponse<List<PostResponse>> readAll(
+            @RequestParam(value = "order", defaultValue = "LATEST") ReadPostParameter.Order order,
+            @RequestParam(value = "emotion", required = false) Emotion emotion,
+            @RequestParam(value = "pageSize", defaultValue = "10") Long pageSize,
+            @RequestParam(value = "lastPostId", required = false) Long lastPostId
+    ) {
+        return ApiResponse.success(
+                postService.readAllInfiniteScroll(ReadPostParameter.of(order, emotion, pageSize, lastPostId)),
+                "게시글이 정상적으로 조회되었습니다."
+        );
     }
 
     @PostMapping("/post")

@@ -1,6 +1,5 @@
 package com.example.guestbook.domain.comment.repository;
 
-import com.example.guestbook.domain.comment.dto.response.CommentResponse;
 import com.example.guestbook.domain.comment.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 

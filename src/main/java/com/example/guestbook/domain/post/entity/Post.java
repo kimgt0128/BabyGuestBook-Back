@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
+@Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
@@ -20,7 +20,9 @@ public class Post {
     private Long id;
 
     private String content;
-    private String emotion;
+
+    @Enumerated(EnumType.STRING)
+    private Emotion emotion;
     private String username;
     private String password;
 
@@ -30,7 +32,7 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Post(String content, String emotion, String username, String password) {
+    public Post(String content, Emotion emotion, String username, String password) {
         this.content = content;
         this.emotion = emotion;
         this.username = username;
