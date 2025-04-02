@@ -12,20 +12,23 @@ import com.example.guestbook.global.error.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class PostService {
+
     private final PostRepository postRepository;
 
-    public List<PostResponse> readAll() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostResponse> readAllInfiniteScroll(Long pageSize, Long lastPostId) {
+        List<Post> posts = lastPostId == null
+                ? postRepository.findAllInfiniteScroll(pageSize)
+                : postRepository.findAllInfiniteScroll(pageSize, lastPostId);
 
         return posts.stream()
                 .map(PostResponse::from)
                 .toList();
-
     }
 
     @Transactional
