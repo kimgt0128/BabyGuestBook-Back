@@ -11,6 +11,7 @@ import com.example.guestbook.domain.post.repository.PostRepository;
 import com.example.guestbook.global.error.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -18,9 +19,12 @@ import java.util.List;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<PostResponse> readAll() {
         List<Post> posts = postRepository.findAll();
+
+
 
         return posts.stream()
                 .map(PostResponse::from)
@@ -30,7 +34,7 @@ public class PostService {
 
     @Transactional
     public void create(CreatePostRequest req) {
-        Post entity = req.toEntity();
+        Post entity = req.toEntity(passwordEncoder);
         postRepository.save(entity);
     }
 
@@ -54,9 +58,8 @@ public class PostService {
     }
 
     private void checkPassword(String password, String expectedPassword) {
-        if (!password.equals(expectedPassword)) {
+        if (!passwordEncoder.matches(password, expectedPassword)) {
             throw new NotFoundException(PostErrorCode.INVALID_PASSWORD);
         }
     }
-
 }

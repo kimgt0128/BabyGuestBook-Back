@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,11 +21,11 @@ public class CreatePostRequest {
         this.password = password;
     }
 
-    public Post toEntity() {
+    public Post toEntity(PasswordEncoder passwordEncoder) {
         return Post.builder()
                 .content(content)
                 .username(username)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .build();
     }
 }
