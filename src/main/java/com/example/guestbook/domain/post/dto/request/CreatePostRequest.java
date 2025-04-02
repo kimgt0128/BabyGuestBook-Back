@@ -1,5 +1,6 @@
 package com.example.guestbook.domain.post.dto.request;
 
+import com.example.guestbook.domain.post.entity.Emotion;
 import com.example.guestbook.domain.post.entity.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class CreatePostRequest {
         return Post.builder()
                 .content(content)
                 .username(username)
+                .emotion(Emotion.HAPPY)
                 .password(passwordEncoder.encode(password))
                 .build();
     }

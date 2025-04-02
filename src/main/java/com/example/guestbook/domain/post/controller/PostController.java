@@ -35,7 +35,7 @@ public class PostController {
         );
     }
 
-    @PostMapping("/post")
+    @PostMapping
     public ApiResponse create(@RequestBody @Valid CreatePostRequest req) {
         postService.create(req);
         return ApiResponse.success("게시글이 정상적으로 생성되었습니다.");
