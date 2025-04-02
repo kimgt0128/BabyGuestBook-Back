@@ -22,6 +22,8 @@ public class PostService {
     public List<PostResponse> readAll() {
         List<Post> posts = postRepository.findAll();
 
+
+
         return posts.stream()
                 .map(PostResponse::from)
                 .toList();
