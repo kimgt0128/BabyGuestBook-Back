@@ -1,4 +1,4 @@
-package com.example.guestbook.global.auth.dto;
+package com.example.guestbook.global.auth.provider;
 
 import com.example.guestbook.domain.member.entity.Member;
 import lombok.Getter;
@@ -14,6 +14,7 @@ public class OAuthUserImpl implements OAuth2User {
     private final Map<String, Object> attributes;
     private final Collection<? extends GrantedAuthority> authorities;
     private final String nameAttributeKey;
+
 
     private OAuthUserImpl(Member member,
                           Map<String, Object> attributes,

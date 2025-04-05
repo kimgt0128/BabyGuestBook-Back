@@ -1,4 +1,4 @@
-package com.example.guestbook.global.auth.dto;
+package com.example.guestbook.global.auth.provider;
 
 import com.example.guestbook.domain.member.entity.Member;
 import com.example.guestbook.domain.member.entity.Role;

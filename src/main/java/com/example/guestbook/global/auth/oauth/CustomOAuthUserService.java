@@ -2,8 +2,8 @@ package com.example.guestbook.global.auth.oauth;
 
 import com.example.guestbook.domain.member.entity.Member;
 import com.example.guestbook.domain.member.repository.MemberRepository;
-import com.example.guestbook.global.auth.dto.OAuthAttributes;
-import com.example.guestbook.global.auth.dto.OAuthUserImpl;
+import com.example.guestbook.global.auth.provider.OAuthAttributes;
+import com.example.guestbook.global.auth.provider.OAuthUserImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -32,8 +32,6 @@ public class CustomOAuthUserService extends DefaultOAuth2UserService {
 
         String userNameAttributeName = clientRegistration.getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
-
-
 
         OAuthAttributes oAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, attributes);
         Member member = getOrSave(oAuthAttributes);
