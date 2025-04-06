@@ -46,8 +46,9 @@ public class PostService {
     }
 
     @Transactional
-    public void create(CreatePostRequest req) {
-        Post entity = req.toEntity(passwordEncoder);
+    public void create(String username, CreatePostRequest req) {
+        // TODO: AI 서버 요청
+        Post entity = req.toEntity(username, passwordEncoder);
         postRepository.save(entity);
     }
 

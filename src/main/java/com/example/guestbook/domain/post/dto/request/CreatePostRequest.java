@@ -12,17 +12,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreatePostRequest {
     private String content;
-    private String username;
     private String password;
 
     @Builder
-    public CreatePostRequest(String content, String username, String password) {
+    public CreatePostRequest(String content, String password) {
         this.content = content;
-        this.username = username;
         this.password = password;
     }
 
-    public Post toEntity(PasswordEncoder passwordEncoder) {
+    public Post toEntity(String username, PasswordEncoder passwordEncoder) {
         return Post.builder()
                 .content(content)
                 .username(username)

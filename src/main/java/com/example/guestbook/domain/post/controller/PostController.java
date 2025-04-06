@@ -7,13 +7,16 @@ import com.example.guestbook.domain.post.dto.request.UpdatePostRequest;
 import com.example.guestbook.domain.post.dto.response.PostResponse;
 import com.example.guestbook.domain.post.entity.Emotion;
 import com.example.guestbook.domain.post.service.PostService;
+import com.example.guestbook.global.auth.dto.OAuthUserImpl;
 import com.example.guestbook.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +39,15 @@ public class PostController {
     }
 
     @PostMapping
-    public ApiResponse create(@RequestBody @Valid CreatePostRequest req) {
-        postService.create(req);
+    public ApiResponse create(
+            @AuthenticationPrincipal OAuthUserImpl loginUser,
+            @RequestBody @Valid CreatePostRequest req
+    ) {
+        String username = Optional.ofNullable(loginUser)
+                .map(OAuthUserImpl::getName)
+                .orElse("익명");
+
+        postService.create(username, req);
         return ApiResponse.success("게시글이 정상적으로 생성되었습니다.");
     }
 
