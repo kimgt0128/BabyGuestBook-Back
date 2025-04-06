@@ -70,6 +70,7 @@ public class JwtProvider {
             throw new BadRequestException(OauthErrorCode.INVALID_TOKEN, "Invalid token: " + e); // 잘못된 토큰 값
         }
     }
+    // 예외를 따로 다 정해주니까 조금 번거로운듯 차라리 customException이였으면 throw new customeException 하나로 해결 간으
 
 
     // todo :: 일단 만들어두기는 했는데 refresh는 사용안하고 accessToken으로만 이용할 예정 시간남으면 refresh 추가 작업

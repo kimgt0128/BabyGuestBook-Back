@@ -1,6 +1,5 @@
 package com.example.guestbook.global.auth.handlers;
 
-import com.example.guestbook.global.auth.dto.TokenDto;
 import com.example.guestbook.global.auth.dto.TokenResponse;
 import com.example.guestbook.global.auth.jwt.JwtProvider;
 import com.example.guestbook.global.auth.jwt.JwtService;
@@ -34,7 +33,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler { //인
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // Authentication에서 OAuth2User 추출
-        OAuthUserImpl oauthUser = (OAuthUserImpl) authentication.getPrincipal();
+        OAuthUserImpl oauthUser = (OAuthUserImpl) authentication.getPrincipal(); //인증된 사용자 객체 반환
 
         TokenResponse tokenResponse =jwtService.createTokens(oauthUser);
 
