@@ -72,6 +72,7 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException(PostErrorCode.NOT_FOUND));
 
         this.checkPassword(req.getPassword(), post.getPassword());
+        postRepository.delete(post);
     }
 
     private void checkPassword(String password, String expectedPassword) {
