@@ -23,7 +23,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role; // 사용자 역할 (예: USER, ADMIN)
 
-
     @Builder
     public Member(String nickname, String email, String registerType, Long socialId, Role role) {
         this.nickname = nickname;
@@ -33,12 +32,11 @@ public class Member {
         this.role = role;
     }
 
-    public static Member of(String name, String email, String registerType, boolean active) {
+    public static Member of(String name, String email, String registerType) {
         return Member.builder()
                 .nickname(name)
                 .email(email)
                 .registerType(registerType)
                 .build();
     }
-
 }

@@ -39,7 +39,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler { //인
 
         String redirectUrl = UriComponentsBuilder.fromUriString(clientUrl)
                 .queryParam("accessToken", tokenResponse.getAccessToken())
-                .queryParam("refreshToken", tokenResponse.getRefreshToken())
+                //.queryParam("refreshToken", tokenResponse.getRefreshToken())
                 .build().toUriString();
 
         response.sendRedirect(redirectUrl);
