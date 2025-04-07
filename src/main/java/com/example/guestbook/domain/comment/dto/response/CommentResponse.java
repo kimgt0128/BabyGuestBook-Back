@@ -1,7 +1,10 @@
 package com.example.guestbook.domain.comment.dto.response;
 
 import com.example.guestbook.domain.comment.entity.Comment;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -11,14 +14,14 @@ public class CommentResponse {
 
     private Long commentId;
     private String content;
-    private User user;
+    private String username;
     private LocalDateTime updatedAt;
 
     @Builder
-    public CommentResponse(Long commentId, String content, User user, LocalDateTime updatedAt) {
+    public CommentResponse(Long commentId, String content, String username, LocalDateTime updatedAt) {
         this.commentId = commentId;
         this.content = content;
-        this.user = user;
+        this.username = username;
         this.updatedAt = updatedAt;
     }
 
@@ -27,16 +30,7 @@ public class CommentResponse {
                 .commentId(comment.getId())
                 .content(comment.getContent())
                 .updatedAt(comment.getUpdatedAt())
-                .user(new User(comment.getUsername()))
+                .username(comment.getUsername())
                 .build();
-    }
-
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @AllArgsConstructor
-    public static class User {
-        //        private Long userId;
-        private String username;
-
     }
 }

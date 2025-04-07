@@ -46,7 +46,7 @@ class PostQueryRepositoryTest {
                     .content("content" + i)
                     .username("user" + i)
                     .password("password")
-                    .emotion(Emotion.HAPPY)
+                    .emotion(Emotion.HAPPINESS)
                     .build();
 
             posts.add(post);
@@ -58,7 +58,7 @@ class PostQueryRepositoryTest {
         long lastPostId = posts.get(posts.size() - 1).getId() - 5;
         List<PostResponse> result = postQueryRepository.findAllInfiniteScrollOrderById(
                 lastPostId,
-                Emotion.HAPPY,
+                Emotion.HAPPINESS,
                 3L
         );
 
@@ -85,7 +85,7 @@ class PostQueryRepositoryTest {
                     .content("content" + i)
                     .username("user" + i)
                     .password("password")
-                    .emotion(Emotion.HAPPY)
+                    .emotion(Emotion.HAPPINESS)
                     .build();
 
             posts.add(post);
@@ -108,7 +108,7 @@ class PostQueryRepositoryTest {
 
         // when
         List<PostResponse> result = postQueryRepository.findAllInfiniteScrollOrderByCommentCnt(
-                Emotion.HAPPY,
+                Emotion.HAPPINESS,
                 3L
         );
 
@@ -134,7 +134,7 @@ class PostQueryRepositoryTest {
                     .content("content" + i)
                     .username("user" + i)
                     .password("password")
-                    .emotion(Emotion.HAPPY)
+                    .emotion(Emotion.HAPPINESS)
                     .build();
 
             posts.add(post);
@@ -157,7 +157,7 @@ class PostQueryRepositoryTest {
 
         // when
         List<PostResponse> result = postQueryRepository.findAllInfiniteScrollOrderByCommentCnt(
-                Emotion.SAD,
+                Emotion.SADNESS,
                 3L
         );
 
