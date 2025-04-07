@@ -5,12 +5,14 @@ import com.example.guestbook.domain.comment.repository.CommentRepository;
 import com.example.guestbook.domain.post.dto.response.PostResponse;
 import com.example.guestbook.domain.post.entity.Emotion;
 import com.example.guestbook.domain.post.entity.Post;
+import com.example.guestbook.domain.post.service.EmotionAnalyser;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,9 @@ import static org.assertj.core.groups.Tuple.tuple;
 @ActiveProfiles("test")
 @SpringBootTest
 class PostQueryRepositoryTest {
+
+    @MockitoBean
+    EmotionAnalyser emotionAnalyser;
 
     @Autowired
     PostRepository postRepository;
