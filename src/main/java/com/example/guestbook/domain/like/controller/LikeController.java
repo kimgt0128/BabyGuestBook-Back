@@ -20,9 +20,6 @@ public class LikeController {
                      @AuthenticationPrincipal OAuthUserImpl oAuthUser) {
         Long memberId = oAuthUser.getMember().getId();
         likeService.like(memberId, postId);
-
-
-
     }
 
     @DeleteMapping("/like")
@@ -30,6 +27,6 @@ public class LikeController {
     public void unlike(@PathVariable("postId") Long postId,
                        @AuthenticationPrincipal OAuthUserImpl oAuthUser) {
         Long memberId = oAuthUser.getMember().getId();
-
+        likeService.unlike(memberId, postId);
     }
 }
