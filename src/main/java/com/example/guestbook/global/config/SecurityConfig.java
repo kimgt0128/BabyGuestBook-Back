@@ -16,9 +16,6 @@ import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -63,8 +60,8 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/").permitAll() // 루트 경로는 누구나 접근 가능
-                        .anyRequest().authenticated()); // 우선은 나머지 경로도 누구나 접근 가능하게 수정
+                        .requestMatchers("/api/v1/posts/{postId}/like", "/api/v1/posts/{postId}/unlike").authenticated()
+                        .anyRequest().permitAll()); // 우선은 나머지 경로도 누구나 접근 가능하게 수정
 
         //oauth2 ::
         http
