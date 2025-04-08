@@ -9,14 +9,18 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="likes")
+@Table(
+        name = "likes",
+        indexes = {
+                @Index(name = "idx_member_id_post_id", columnList = "memberId, postId")
+        }
+)
 @Entity
 public class Like {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     private Long memberId;
     private Long postId;

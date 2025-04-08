@@ -1,7 +1,7 @@
 package com.example.guestbook.domain.like.controller;
 
 import com.example.guestbook.domain.like.service.LikeService;
-import com.example.guestbook.global.auth.dto.OAuthUserImpl;
+import com.example.guestbook.global.auth.provider.OAuthUserImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

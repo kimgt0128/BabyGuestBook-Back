@@ -5,7 +5,7 @@ import com.example.guestbook.domain.comment.dto.request.DeleteCommentRequest;
 import com.example.guestbook.domain.comment.dto.request.UpdateCommentRequest;
 import com.example.guestbook.domain.comment.dto.response.CommentResponse;
 import com.example.guestbook.domain.comment.service.CommentService;
-import com.example.guestbook.global.auth.dto.OAuthUserImpl;
+import com.example.guestbook.global.auth.provider.OAuthUserImpl;
 import com.example.guestbook.global.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
