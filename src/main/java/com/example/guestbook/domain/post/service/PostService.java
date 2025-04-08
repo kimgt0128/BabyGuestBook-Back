@@ -29,16 +29,18 @@ public class PostService {
     private final PasswordEncoder passwordEncoder;
     private final EmotionAnalyser emotionAnalyser;
 
-    public List<PostResponse> readAllInfiniteScroll(ReadPostParameter parameter) {
+    public List<PostResponse> readAllInfiniteScroll(Long loginMemberId, ReadPostParameter parameter) {
         switch (parameter.getOrder()) {
             case LATEST:
                 return postQueryRepository.findAllInfiniteScrollOrderById(
+                        loginMemberId,
                         parameter.getLastPostId(),
                         parameter.getEmotion(),
                         parameter.getPageSize()
                 );
             case COMMENT:
                 return postQueryRepository.findAllInfiniteScrollOrderByCommentCnt(
+                        loginMemberId,
                         parameter.getEmotion(),
                         parameter.getPageSize()
                 );
