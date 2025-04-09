@@ -7,24 +7,17 @@ import com.example.guestbook.global.auth.exception.OauthErrorCode;
 import com.example.guestbook.global.auth.oauth.CustomUserDetailService;
 import com.example.guestbook.global.auth.provider.OAuthUserImpl;
 import com.example.guestbook.global.error.exception.BadRequestException;
-import com.example.guestbook.global.error.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,15 +35,15 @@ public class JwtService {
      */
     public TokenResponse createTokens(OAuthUserImpl oauthUser) {
         Date now = new Date();
-        String accessToken = jwtProvider.generateAccessToken(oauthUser,now);
+        String accessToken = jwtProvider.generateAccessToken(oauthUser, now);
         //String refreshToken = jwtProvider.generateRefreshToken(oauthUser,now);
 
         // 리프레시 토큰 저장
-     // saveRefreshToken(oauthUser.getMember().getEmail(), refreshToken);
+        // saveRefreshToken(oauthUser.getMember().getEmail(), refreshToken);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
-               // .refreshToken(refreshToken)
+                // .refreshToken(refreshToken)
                 .build();
     }
 
@@ -105,7 +98,6 @@ public class JwtService {
 //        redisTemplate.delete(email);
 //        log.info("로그아웃 처리 완료: {}", email);
 //    }
-
     public Authentication getAuthentication(String token) {
         // 토큰에서 사용자 정보 추출
         Claims claims = jwtProvider.getPayload(token);

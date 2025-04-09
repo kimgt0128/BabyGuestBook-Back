@@ -30,8 +30,8 @@ public class CommentService {
     }
 
     @Transactional
-    public void create(Long postId, CreateCommentRequest req) {
-        Comment comment = req.toEntity(postId, passwordEncoder);
+    public void create(Long postId, String username, CreateCommentRequest req) {
+        Comment comment = req.toEntity(postId, username, passwordEncoder);
         commentRepository.save(comment);
     }
 

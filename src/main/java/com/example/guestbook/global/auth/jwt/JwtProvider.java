@@ -6,22 +6,15 @@ import com.example.guestbook.global.error.exception.BadRequestException;
 import com.example.guestbook.global.error.exception.UnauthorizedException;
 import com.example.guestbook.global.error.exception.UnsupportedMediaTypeException;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
-
-import static com.nimbusds.oauth2.sdk.token.BearerTokenError.INVALID_TOKEN;
 
 @Component
 public class JwtProvider {
@@ -30,15 +23,15 @@ public class JwtProvider {
     @Value("${jwt.access-token.expired}")
     private Long accessTokenExpired;
 
-    @Value("${jwt.refresh-token.expired}")
-    private Long refreshTokenExpired;
+//    @Value("${jwt.refresh-token.expired}")
+//    private Long refreshTokenExpired;
 
     private SecretKey secretKey;
     private JwtParser jwtParser;
     //private final RedisTemplate<String, String> redisTemplate;
 
     // 나는 secret ket 정의해주지 않았는데 이 방식이 jwt 토큰 생성할 때 매번 해시함수 정해주지 않아도 돼서 좋은거 같음
-    public JwtProvider(@Value("${jwt.secret-key}") String secretKeyString, RedisTemplate<String, String> redisTemplate) {
+    public JwtProvider(@Value("${jwt.secret-key}") String secretKeyString) {
         // 안전한 키 생성 방식으로 변경
         this.secretKey = Jwts.SIG.HS256.key().build();
 
@@ -56,7 +49,7 @@ public class JwtProvider {
     }
 
     public boolean validateToken(String token) {
-        if(StringUtils.hasText(token) && token.startsWith(BEARER_PREFIX)) {
+        if (StringUtils.hasText(token) && token.startsWith(BEARER_PREFIX)) {
             token = token.substring(BEARER_PREFIX.length());
         }
 
@@ -84,10 +77,10 @@ public class JwtProvider {
         return Jwts.builder()
                 .subject(oauthUser.getMember().getEmail())
                 .claim("id", oauthUser.getMember().getId())
-                .claim("username",oauthUser.getName())
-                .claim("role",authorities)
+                .claim("username", oauthUser.getName())
+                .claim("role", authorities)
                 .issuedAt(now)
-                .expiration(new Date(now.getTime()+accessTokenExpired))
+                .expiration(new Date(now.getTime() + accessTokenExpired))
                 .signWith(secretKey)
                 .compact();
     }
@@ -106,9 +99,9 @@ public class JwtProvider {
         return accessTokenExpired;
     }
 
-    public Long getRefreshTokenExpiration() {
-        return refreshTokenExpired;
-    }
+//    public Long getRefreshTokenExpiration() {
+//        return refreshTokenExpired;
+//    }
 
     public Claims getPayload(String token) {
         return jwtParser
