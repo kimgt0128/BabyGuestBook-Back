@@ -6,6 +6,7 @@ import com.example.guestbook.domain.post.dto.request.DeletePostRequest;
 import com.example.guestbook.domain.post.dto.request.ReadPostParameter;
 import com.example.guestbook.domain.post.dto.request.UpdatePostRequest;
 import com.example.guestbook.domain.post.dto.response.PostResponse;
+import com.example.guestbook.domain.post.entity.Emotion;
 import com.example.guestbook.domain.post.entity.Post;
 import com.example.guestbook.domain.post.exception.PostErrorCode;
 import com.example.guestbook.domain.post.repository.PostQueryRepository;
@@ -19,24 +20,27 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
     private final PostQueryRepository postQueryRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmotionAnalyser emotionAnalyser;
 
-    public List<PostResponse> readAllInfiniteScroll(ReadPostParameter parameter) {
+    public List<PostResponse> readAllInfiniteScroll(Long loginMemberId, ReadPostParameter parameter) {
         switch (parameter.getOrder()) {
             case LATEST:
                 return postQueryRepository.findAllInfiniteScrollOrderById(
+                        loginMemberId,
                         parameter.getLastPostId(),
                         parameter.getEmotion(),
                         parameter.getPageSize()
                 );
             case COMMENT:
                 return postQueryRepository.findAllInfiniteScrollOrderByCommentCnt(
+                        loginMemberId,
                         parameter.getEmotion(),
                         parameter.getPageSize()
                 );
@@ -46,20 +50,22 @@ public class PostService {
     }
 
     @Transactional
-    public void create(CreatePostRequest req) {
-        Post entity = req.toEntity(passwordEncoder);
-        postRepository.save(entity);
+    public void create(String username, CreatePostRequest req) {
+        Emotion emotion = Emotion.valueOf(emotionAnalyser.analysis(req.getContent()));
+        String encodedPassword = passwordEncoder.encode(req.getPassword());
+        Post post = Post.of(req.getContent(), emotion, username, encodedPassword);
+        postRepository.save(post);
     }
 
     @Transactional
     public void update(Long postId, UpdatePostRequest req) {
-
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(PostErrorCode.NOT_FOUND));
 
         this.checkPassword(req.getPassword(), post.getPassword());
 
-        post.update(req.getContent());
+        Emotion emotion = Emotion.valueOf(emotionAnalyser.analysis(req.getContent()));
+        post.update(req.getContent(), emotion);
     }
 
     @Transactional
@@ -68,6 +74,7 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException(PostErrorCode.NOT_FOUND));
 
         this.checkPassword(req.getPassword(), post.getPassword());
+        postRepository.delete(post);
     }
 
     private void checkPassword(String password, String expectedPassword) {

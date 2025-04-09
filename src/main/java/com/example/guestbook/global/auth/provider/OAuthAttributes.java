@@ -1,4 +1,4 @@
-package com.example.guestbook.global.auth.dto;
+package com.example.guestbook.global.auth.provider;
 
 import com.example.guestbook.domain.member.entity.Member;
 import com.example.guestbook.domain.member.entity.Role;
@@ -44,12 +44,14 @@ public class OAuthAttributes {
         Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
 
+
         return OAuthAttributes.builder()
                 .attributes(attributes)
-                .email(profile.get("email").toString())
+                .email(account.get("email").toString())
                 .nickname(profile.get("nickname").toString())
                 .registerType("kakao")
                 .socialId(Long.valueOf(attributes.get("id").toString())) // 사용자 고유 id인거지 client-id랑은 다른 값
+                .nameAttributeKey(nameAttribute)
                 //tostring으로 변환하고 넣어주는 이유는 널 예외를 방지하고, integer 값일때도 안전하게 long으로 변환가능해서
                 .build();
     }

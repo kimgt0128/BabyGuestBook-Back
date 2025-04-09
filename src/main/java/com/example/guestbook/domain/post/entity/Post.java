@@ -39,8 +39,18 @@ public class Post {
         this.password = password;
     }
 
-    public void update(String content) {
+    public static Post of(String content, Emotion emotion, String username, String password) {
+        return Post.builder()
+                .content(content)
+                .emotion(emotion)
+                .username(username)
+                .password(password)
+                .build();
+    }
+
+    public void update(String content, Emotion emotion) {
         this.content = content;
+        this.emotion = emotion;
     }
 
 }

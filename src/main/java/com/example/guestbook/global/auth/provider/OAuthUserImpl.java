@@ -1,27 +1,26 @@
-package com.example.guestbook.global.auth.dto;
+package com.example.guestbook.global.auth.provider;
 
 import com.example.guestbook.domain.member.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Map;
 
 @Getter
-public class OAuthUserImpl implements OAuth2User {
+public class OAuthUserImpl extends DefaultOAuth2User implements UserDetails {
     private final Member member;
-    private final Map<String, Object> attributes;
-    private final Collection<? extends GrantedAuthority> authorities;
     private final String nameAttributeKey;
 
     private OAuthUserImpl(Member member,
                           Map<String, Object> attributes,
                           Collection<? extends GrantedAuthority> authorities,
                           String nameAttributeKey) {
+        super(authorities, attributes, nameAttributeKey);
         this.member = member;
-        this.attributes = attributes;
-        this.authorities = authorities;
         this.nameAttributeKey = nameAttributeKey;
     }
 
@@ -33,20 +32,36 @@ public class OAuthUserImpl implements OAuth2User {
     }
 
     @Override
-    public Map<String, Object> getAttributes() {
-        return attributes;
+    public String getPassword() {
+        return null;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+    public String getUsername() {
+        return member.getId().toString();
     }
 
     @Override
-    public String getName() {
-        return attributes.get(nameAttributeKey).toString();
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    // UserDetails 관련 메서드 모두 제거
-    // getPassword(), getUsername(), isAccountNonExpired() 등
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public Member getMember() {
+        return member;
+    }
 }

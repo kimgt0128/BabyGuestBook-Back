@@ -11,5 +11,18 @@ public class TestController {
     public String mainApi() {
         return "success main";
     }
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "Test successful!";
+    }
+
+    @GetMapping("/secured")
+    @ResponseBody
+    public String secured() {
+        return "This is a secured endpoint";
+    }
 }
+
 

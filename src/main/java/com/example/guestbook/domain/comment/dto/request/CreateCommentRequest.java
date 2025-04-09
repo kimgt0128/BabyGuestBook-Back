@@ -11,17 +11,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateCommentRequest {
     private String content;
-    private String username;
     private String password;
 
     @Builder
-    public CreateCommentRequest(String content, String username, String password) {
+    public CreateCommentRequest(String content, String password) {
         this.content = content;
-        this.username = username;
         this.password = password;
     }
 
-    public Comment toEntity(Long postId, PasswordEncoder passwordEncoder) {
+    public Comment toEntity(Long postId, String username, PasswordEncoder passwordEncoder) {
         return Comment.builder()
                 .content(content)
                 .username(username)
